@@ -19,7 +19,7 @@ import (
 
 func example() {
 	// Не подставляйте данные напрямую, берите их при помощи os.GetEnv
-	dice := internal.NewDice("your_token", "your_merchant_id")
+	dice := api.NewDice("your_token", "your_merchant_id")
 
 	ctx := context.Background()
 
