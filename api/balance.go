@@ -4,24 +4,24 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
-	"github.com/luckybet/app/pkg/parse"
+	"github.com/defany/dicego/pkg/format"
+	"github.com/defany/dicego/pkg/parse"
 )
 
 var CoinsBalanceNotRegistered = errors.New("not registered")
 
 type CoinsBalanceReq struct {
-	User   int   `json:"user"`
-	Pretty uint8 `json:"pretty"`
+	User int `json:"user"`
 }
 
 type CoinsBalanceRes struct {
 	Balance  float64 `json:"balance"`
-	IsHiding bool    `json:"is_hiding"`
+	IsHiding int     `json:"is_hiding"`
 }
 
 type coinsBalanceRes struct {
 	Balance  string `json:"balance"`
-	IsHiding bool   `json:"is_hiding"`
+	IsHiding int    `json:"is_hiding"`
 }
 
 func NewCoinsBalanceReq(user int) CoinsBalanceReq {
@@ -30,8 +30,9 @@ func NewCoinsBalanceReq(user int) CoinsBalanceReq {
 	}
 }
 
-func (c *CoinsBalanceReq) MakePretty() {
-	c.Pretty = 1
+// PrettyBalance Баланс пользователя в user friendly виде.
+func (c *CoinsBalanceRes) PrettyBalance() string {
+	return format.NumWithSpaces(c.Balance)
 }
 
 // CoinsBalance Получение баланса пользователя по его айди.
@@ -52,7 +53,6 @@ func (d *Dice) CoinsBalance(ctx context.Context, params CoinsBalanceReq) (CoinsB
 	}
 
 	publicBody := CoinsBalanceRes{
-		Balance:  0,
 		IsHiding: privateBody.IsHiding,
 	}
 

@@ -3,20 +3,31 @@ package api
 import (
 	"context"
 	"encoding/json"
+	"github.com/defany/dicego/pkg/format"
 )
 
 type CoinsHistoryReq struct {
 	Limit      uint8  `json:"limit"`
 	Offset     uint32 `json:"offset"`
-	Pretty     uint8  `json:"pretty"`
-	WithFailed uint8  `json:"with_failed"`
+	WithFailed uint8  `json:"with_failed,omitempty"`
+}
+
+type HistoryPayment struct {
+	ID       string  `json:"id"`
+	FromUser int     `json:"from_user"`
+	ToUser   int     `json:"to_user"`
+	Amount   float64 `json:"amount"`
+	Date     int     `json:"date"`
+	Success  int     `json:"success"`
 }
 
 type CoinsHistoryRes struct {
+	User    int              `json:"user"`
+	History []HistoryPayment `json:"history"`
 }
 
-func NewCoinsHistoryReq() CoinsBalanceReq {
-	return CoinsBalanceReq{}
+func NewCoinsHistoryReq() CoinsHistoryReq {
+	return CoinsHistoryReq{}
 }
 
 // WithLimit Будет возвращено только n транзакций.
@@ -29,14 +40,14 @@ func (c *CoinsHistoryReq) WithOffset(n uint32) {
 	c.Offset = n
 }
 
-// MakePretty Суммы переводов будут разделены пробелами.
-func (c *CoinsHistoryReq) MakePretty() {
-	c.Pretty = 1
-}
-
 // WithFailedTx Будут возвращены также неудавшиеся транзакции.
 func (c *CoinsHistoryReq) WithFailedTx() {
 	c.WithFailed = 1
+}
+
+// PrettyAmount Получение суммы перевода в user friendly виде.
+func (h *HistoryPayment) PrettyAmount() string {
+	return format.NumWithSpaces(h.Amount)
 }
 
 // CoinsHistory Получение истории транзакций.

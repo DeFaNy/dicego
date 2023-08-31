@@ -11,6 +11,9 @@ type CoinsSendReq struct {
 }
 
 type CoinsSendRes struct {
+	User    int     `json:"user"`
+	Balance float64 `json:"balance"`
+	Amount  float64 `json:"amount"`
 }
 
 func NewCoinsSendReq(user int, amount float64) CoinsSendReq {

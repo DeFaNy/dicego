@@ -12,6 +12,8 @@ type ApiCallbackReq struct {
 }
 
 type ApiCallbackRes struct {
+	Desc string `json:"desc"`
+	Url  string `json:"url"`
 }
 
 type CallbackNotification struct {

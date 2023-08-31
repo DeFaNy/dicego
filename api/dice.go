@@ -4,10 +4,23 @@ import (
 	"bytes"
 	"context"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"io"
 	"net/http"
 )
+
+type Method string
+
+const (
+	CoinsBalance Method = "coins.balance"
+	CoinsHistory Method = "coins.history"
+	CoinsSend    Method = "coins.send"
+	ApiCallback  Method = "api.callback"
+	ApiRename    Method = "api.rename"
+)
+
+var ErrfailedErrorCheck = errors.New("failed to check error")
 
 const apiURL = "https://api-dice.belle.dev/v2"
 
@@ -53,7 +66,25 @@ func (d *Dice) sendRequest(ctx context.Context, method Method, params any) ([]by
 		return nil, err
 	}
 
+	if err = d.checkError(res.StatusCode, resBody); err != nil {
+		return nil, err
+	}
+
 	return resBody, nil
+}
+
+func (d *Dice) checkError(code int, res []byte) error {
+	if code == http.StatusOK {
+		return nil
+	}
+
+	var errBody Error
+
+	if err := json.Unmarshal(res, &errBody); err != nil {
+		return errors.Join(ErrfailedErrorCheck, err)
+	}
+
+	return errors.New(errBody.Desc)
 }
 
 func (d *Dice) url(method Method) string {

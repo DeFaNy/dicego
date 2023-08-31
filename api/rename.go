@@ -10,6 +10,8 @@ type ApiRenameReq struct {
 }
 
 type ApiRenameRes struct {
+	Desc string `json:"desc"`
+	Name string `json:"name"`
 }
 
 func NewApiRenameReq(name string) ApiRenameReq {
