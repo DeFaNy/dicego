@@ -19,6 +19,7 @@ type HistoryPayment struct {
 	Amount   float64 `json:"amount"`
 	Date     int     `json:"date"`
 	Success  int     `json:"success"`
+	Payload  string  `json:"payload"`
 }
 
 type CoinsHistoryRes struct {
