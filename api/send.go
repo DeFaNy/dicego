@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	"net/url"
 )
 
 type CoinsSendReq struct {
@@ -36,21 +35,17 @@ func (p *PaymentLink) WithPayload(payload int) {
 }
 
 func (p *PaymentLink) String() string {
-	u := url.URL{
-		Scheme: "https",
-		Host:   "vk.com",
-		Path:   fmt.Sprintf("/app%d", appID),
-	}
+	u := fmt.Sprintf("https://vk.com/app%d", appID)
 
 	if p.userID != nil {
-		u.Path += fmt.Sprintf("#%s", *p.userID)
+		u += fmt.Sprintf("#%s", *p.userID)
 	}
 
 	if p.payload != nil {
-		u.Path += fmt.Sprintf("/%d", *p.payload)
+		u += fmt.Sprintf("/%d", *p.payload)
 	}
 
-	return u.String()
+	return u
 }
 
 func NewCoinsSendReq(user int, amount float64) CoinsSendReq {
