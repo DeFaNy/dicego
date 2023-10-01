@@ -47,7 +47,7 @@ func (p *PaymentLink) String() string {
 	}
 
 	if p.payload != nil {
-		u.Path += fmt.Sprintf("/%d", p.payload)
+		u.Path += fmt.Sprintf("/%d", *p.payload)
 	}
 
 	return u.String()
