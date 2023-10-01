@@ -38,6 +38,10 @@ func NewDice(token string, merchantID string) Dice {
 	}
 }
 
+func (d *Dice) MerchantID() string {
+	return d.merchantID
+}
+
 func (d *Dice) sendRequest(ctx context.Context, method Method, params any) ([]byte, error) {
 	body := new(bytes.Buffer)
 

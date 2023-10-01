@@ -19,7 +19,7 @@ type CoinsSendRes struct {
 }
 
 type PaymentLink struct {
-	userID  *int
+	userID  *string
 	payload *int
 }
 
@@ -27,7 +27,7 @@ func NewPaymentLink() PaymentLink {
 	return PaymentLink{}
 }
 
-func (p *PaymentLink) WithUserID(id int) {
+func (p *PaymentLink) WithUserID(id string) {
 	p.userID = &id
 }
 
@@ -43,7 +43,7 @@ func (p *PaymentLink) String() string {
 	}
 
 	if p.userID != nil {
-		u.Path += fmt.Sprintf("#%d", p.userID)
+		u.Path += fmt.Sprintf("#%s", *p.userID)
 	}
 
 	if p.payload != nil {
