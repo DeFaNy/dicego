@@ -18,12 +18,14 @@ type HistoryPayment struct {
 	ToUser   int     `json:"to_user"`
 	Amount   float64 `json:"amount"`
 	Date     int     `json:"date"`
-	Success  int     `json:"success"`
-	Payload  int     `json:"payload"`
+	Success  int     `json:"success,omitempty"`
+	Payload  int     `json:"payload,omitempty"`
 }
 
 type CoinsHistoryRes struct {
 	User    int              `json:"user"`
+	Limit   int              `json:"limit,omitempty"`
+	Offset  int              `json:"offset,omitempty"`
 	History []HistoryPayment `json:"history"`
 }
 
