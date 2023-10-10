@@ -21,7 +21,7 @@ type CallbackNotification struct {
 	FromUser    int     `json:"from_user"`
 	Amount      float64 `json:"amount"`
 	Date        int     `json:"date"`
-	Payload     *string `json:"payload"`
+	Payload     string  `json:"payload,omitempty"`
 	RequestHash string  `json:"request_hash,omitempty"`
 }
 
