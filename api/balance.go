@@ -5,7 +5,6 @@ import (
 	"encoding/json"
 	"errors"
 	"github.com/defany/dicego/pkg/format"
-	"github.com/defany/dicego/pkg/parse"
 )
 
 var CoinsBalanceNotRegistered = errors.New("not registered")
@@ -56,15 +55,12 @@ func (d *Dice) CoinsBalance(ctx context.Context, params CoinsBalanceReq) (CoinsB
 		IsHiding: privateBody.IsHiding,
 	}
 
-	balance, ok := privateBody.Balance.(string)
+	balance, ok := privateBody.Balance.(float64)
 	if !ok {
 		return CoinsBalanceRes{}, errors.New("failed to cast balance to string")
 	}
 
-	publicBody.Balance, err = parse.FloatWithoutExtra(balance)
-	if err != nil {
-		return CoinsBalanceRes{}, err
-	}
+	publicBody.Balance = balance
 
 	return publicBody, nil
 }
