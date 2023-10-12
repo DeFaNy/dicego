@@ -20,8 +20,8 @@ type CoinsBalanceRes struct {
 }
 
 type coinsBalanceRes struct {
-	Balance  string `json:"balance"`
-	IsHiding int    `json:"is_hiding"`
+	Balance  any `json:"balance"`
+	IsHiding int `json:"is_hiding"`
 }
 
 func NewCoinsBalanceReq(user int) CoinsBalanceReq {
@@ -56,7 +56,12 @@ func (d *Dice) CoinsBalance(ctx context.Context, params CoinsBalanceReq) (CoinsB
 		IsHiding: privateBody.IsHiding,
 	}
 
-	publicBody.Balance, err = parse.FloatWithoutExtra(privateBody.Balance)
+	balance, ok := privateBody.Balance.(string)
+	if !ok {
+		return CoinsBalanceRes{}, errors.New("failed to cast balance to string")
+	}
+
+	publicBody.Balance, err = parse.FloatWithoutExtra(balance)
 	if err != nil {
 		return CoinsBalanceRes{}, err
 	}

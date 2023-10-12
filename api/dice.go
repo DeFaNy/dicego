@@ -54,7 +54,7 @@ func (d *Dice) sendRequest(ctx context.Context, method Method, params any) ([]by
 		return nil, err
 	}
 
-	req.WithContext(ctx)
+	req = req.WithContext(ctx)
 
 	req.Header.Set("dc-key", d.token)
 
